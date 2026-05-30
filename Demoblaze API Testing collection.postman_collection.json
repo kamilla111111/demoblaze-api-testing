@@ -1,0 +1,483 @@
+{
+  "info": {
+    "_postman_id": "2e69200c-109b-455c-a927-942b43264ba5",
+    "name": "Demoblaze API Testing collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54904551",
+    "_collection_link": "https://go.postman.co/collection/54904551-2e69200c-109b-455c-a927-942b43264ba5?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "post login valid",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"test\", \"password\": \"dGVzdA==\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.demoblaze.com/login",
+          "protocol": "https",
+          "host": [
+            "api",
+            "demoblaze",
+            "com"
+          ],
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "post login invalid",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Статус код 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Ответ содержит errorMessage\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"errorMessage\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Сообщение об ошибке равно Wrong password.\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.errorMessage).to.eql(\"Wrong password.\");\r",
+              "});\r",
+              "\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"wrong_user\", \"password\": \"wrong_password\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.demoblaze.com/login",
+          "protocol": "https",
+          "host": [
+            "api",
+            "demoblaze",
+            "com"
+          ],
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "post login - empty password",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"test\",\r\n\"password\": \"\" \r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.demoblaze.com/login",
+          "protocol": "https",
+          "host": [
+            "api",
+            "demoblaze",
+            "com"
+          ],
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "post empty body",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.demoblaze.com/login",
+          "protocol": "https",
+          "host": [
+            "api",
+            "demoblaze",
+            "com"
+          ],
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get products- list",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Статус код 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Время ответа меньше 2000 мс\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Ответ содержит массив товаров\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.Items).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Список товаров не пустой\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.Items.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Первый товар содержит поле id\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.Items[0]).to.have.property(\"id\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Первый товар содержит поле title\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.Items[0]).to.have.property(\"title\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Первый товар содержит поле price\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.Items[0]).to.have.property(\"price\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Цена первого товара является числом\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.Items[0].price).to.be.a(\"number\");\r",
+              "});\r",
+              "\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.demoblaze.com/entries",
+          "protocol": "https",
+          "host": [
+            "api",
+            "demoblaze",
+            "com"
+          ],
+          "path": [
+            "entries"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "post product-valid ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"ID товара является числом\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Товар содержит поле price\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"price\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Товар содержит поле title\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"title\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Описание товара не пустое\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.desc).to.not.be.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Категория товара указана\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.cat).to.not.be.empty;\r",
+              "});\r",
+              "\r",
+              "\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\":1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.demoblaze.com/view",
+          "protocol": "https",
+          "host": [
+            "api",
+            "demoblaze",
+            "com"
+          ],
+          "path": [
+            "view"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "post invalid ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Статус код 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Ответ содержит errorMessage\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"errorMessage\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Сообщение об ошибке равно Not found.\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.errorMessage).to.eql(\"Not found.\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\":99999999\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.demoblaze.com/view",
+          "protocol": "https",
+          "host": [
+            "api",
+            "demoblaze",
+            "com"
+          ],
+          "path": [
+            "view"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "post product - string ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Статус код 500\", function () {\r",
+              "    pm.response.to.have.status(500);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Ответ содержит Internal Server Error\", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"Internal Server Error\");\r",
+              "});\r",
+              "\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\":\"abc\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.demoblaze.com/view",
+          "protocol": "https",
+          "host": [
+            "api",
+            "demoblaze",
+            "com"
+          ],
+          "path": [
+            "view"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "post product missing id",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains Product not found\", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"Product not found\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Ответ содержит errorMessage\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"errorMessage\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Сообщение равно Product not found.\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.errorMessage).to.eql(\"Product not found.\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.demoblaze.com/view",
+          "protocol": "https",
+          "host": [
+            "api",
+            "demoblaze",
+            "com"
+          ],
+          "path": [
+            "view"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

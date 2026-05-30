@@ -39,6 +39,35 @@
 - Error handling
 - JSON response validation
 
+
+## Test Coverage
+
+- Valid Login
+- Invalid Login
+- Empty Password
+- Empty Request Body
+- Product List Retrieval
+- Product Details by Valid ID
+- Product Details by Invalid ID
+- Product Details by String ID
+- Product Details with Missing ID
+
+## Automated Checks
+
+- Status Code Validation
+- Response Time Validation
+- Response Body Validation
+- Error Message Validation
+- Data Type Validation
+- JSON Structure Validation
+- Array Validation
+
+## Results
+
+- Requests: 9
+- Automated Tests: 25
+- Passed: 25
+- Failed: 0
 ## Файлы проекта
 - Postman Collection
 - Automated API Tests
